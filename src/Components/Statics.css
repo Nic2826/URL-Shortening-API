@@ -1,0 +1,32 @@
+.statics {
+  justify-content: center;
+  background-color: #f0f0f0;
+  padding: 50px 0 450px 0;
+  margin: 0;
+  width: 100%;
+}
+
+.statics__title {
+  font-size: 45px;
+  font-weight: 900;
+  text-align: center;
+  margin: 0;
+}
+
+.statics__description {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 10px;
+  color: gray;
+  margin-top: 15px;
+  line-height: 1.5;
+}
+
+.statics__cards {
+    margin-top: 100px;
+    display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: center;
+}

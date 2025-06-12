@@ -1,0 +1,64 @@
+.shortener {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background: rgb(61, 27, 92) no-repeat center ;
+  background-image: url("/public/images/bg-shorten-desktop.svg");
+  height: 100px;
+  width: 80%;
+  margin: auto;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 1px 2px 4px rgb(0 0 0);
+}
+
+.shortener__input {
+  background-color: white;
+  height: 40px;
+  width: 82%;
+  align-self: center;
+  border-radius: 10px;
+  padding-left: 10px;
+  font-size: 18px;
+}
+
+.shortener__input::placeholder {
+  color: #999;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.shortener__input:focus{
+  outline: none;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.shortener__button {
+  background-color: hsl(180, 66%, 49%);
+  color: white;
+  border: none;
+  height: 40%;
+  width: 15%;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: center;
+  border-radius: 10px;
+}
+
+
+.shortener__button:hover {
+  background-color: hsl(180, 66%, 40%);
+}
+
+.shortener__error{
+  position: absolute;
+  top: 90px;
+  left: -70px;
+  color: rgb(209, 120, 120);
+  font-size: 16px;
+  margin-top: 5px;
+  text-align: center;
+  width: 100%;
+}
