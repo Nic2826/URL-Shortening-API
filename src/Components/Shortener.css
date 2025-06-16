@@ -1,10 +1,11 @@
 .shortener {
-  position: relative;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  background: rgb(61, 27, 92) no-repeat center ;
+  justify-content: center;
+  background: rgb(61, 27, 92) no-repeat center;
   background-image: url("/public/images/bg-shorten-desktop.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
   height: 100px;
   width: 80%;
   margin: auto;
@@ -16,11 +17,15 @@
 .shortener__input {
   background-color: white;
   height: 40px;
-  width: 82%;
+  width: 85%;
   align-self: center;
   border-radius: 10px;
   padding-left: 10px;
   font-size: 18px;
+}
+
+.shortener__input-error {
+  border-color: red;
 }
 
 .shortener__input::placeholder {
@@ -29,7 +34,11 @@
   font-weight: 600;
 }
 
-.shortener__input:focus{
+.shortener__input-error::placeholder {
+  color: rgba(255, 0, 0, 0.456);
+}
+
+.shortener__input:focus {
   outline: none;
   font-size: 18px;
   font-weight: 600;
@@ -45,14 +54,15 @@
   cursor: pointer;
   align-self: center;
   border-radius: 10px;
+  font-size: medium;
 }
-
 
 .shortener__button:hover {
   background-color: hsl(180, 66%, 40%);
+  transform: scale(1.05);
 }
 
-.shortener__error{
+.shortener__error {
   position: absolute;
   top: 90px;
   left: -70px;
@@ -61,4 +71,23 @@
   margin-top: 5px;
   text-align: center;
   width: 100%;
+}
+
+.shortener__close-button {
+  background-image: url("/images/closeicon.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  top: 40px;
+  right: 35px;
+  opacity: 0.6;
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+}
+
+.shortener__close-button:hover {
+  opacity: 1;
+  cursor: pointer;
+  transform: scale(1.05);
 }

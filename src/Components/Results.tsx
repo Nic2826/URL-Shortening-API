@@ -1,37 +1,37 @@
-import { useEffect, useState } from 'react';
-
+import { useState } from "react";
 type ResultsProps = {
-  originalUrl: string;
-  shortUrl: string;
-}
-export default function Results({originalUrl, shortUrl}: ResultsProps) {
+  listUrl: { originalUrl: string; shortUrl: string }[];
+  onDelete: (index: number) => void;
+};
+export default function Results({ listUrl, onDelete }: ResultsProps) {
+  const [isClickedIndex, setIsClickedIndex] = useState<number | null>(null);
 
-   // en este caso Typescript me pide usar <string[]> para especificar que tipos de datos van dentro de listUrl en cambio en los demas estados, lo infiere
-    const [listUrl, setListUrl] = useState<{originalUrl: string, shortUrl: string }[]>([]);
+  if (listUrl.length === 0) {
+    return <p className="result-empty">No shortened URLs yet.</p>;
+  }
 
-  useEffect(()=>{
-    if (originalUrl && shortUrl){
-const newList = {originalUrl, shortUrl}
-setListUrl(prevList => [...prevList,newList])
-    } 
-    
-  }, [shortUrl])
-
-  // Leer el valor desde localStorage
-  // const savedOriginalUrl = localStorage.getItem("originalUrl");
-
-  if(!shortUrl) return null; // Si no hay shortUrl, no renderizar nada
-  
   return (
-    <>  
+    <>
       {listUrl.map((arrayElement, index) => (
-        <div className="shortener__result" key={index}>
-        <p>{arrayElement.originalUrl}</p>
-        <p>{arrayElement.shortUrl}</p>
-         <button>Copy</button>
-      </div>
+        <div className="result-container" key={index}>
+          <p className="result-original-url">{arrayElement.originalUrl}</p>
+          <p className="result-short-url">{arrayElement.shortUrl}</p>
+          <button
+            className={isClickedIndex === index ? "result__copy-button result__copy-button-clicked" : "result__copy-button"}
+            onClick={() => {
+              navigator.clipboard.writeText(arrayElement.shortUrl);
+              setIsClickedIndex(index);
+              setTimeout(() => {
+                setIsClickedIndex(null);
+              }, 1500);
+            }}
+          >
+            {isClickedIndex === index ? "Copied!" : "Copy"}
+          </button>
+          <div className="result__close-button" onClick={() => onDelete(index)}>
+          </div>
+        </div>
       ))}
-    </>  
-  )
-  
+    </>
+  );
 }
