@@ -14,7 +14,7 @@ export default function Main() {
       </p>
 
       <button className="main__button">Get Started</button>
-      <img className="main__img" src="/public/images/illustration-working.svg" alt="" />
+      {/* <img className="main__img" src="/public/images/illustration-working.svg" alt="" /> */}
     </div>
   );
 }

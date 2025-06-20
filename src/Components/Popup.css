@@ -1,0 +1,147 @@
+.popup{
+ display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  height: 300px;
+  background-color: rgb(241, 235, 235);
+  position: fixed;
+  top: 30%;
+  left: 40%;
+  z-index: 2;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.popup-hidden{
+  display: none;
+
+}
+
+.popup-form {
+  z-index: 3;
+ 
+}
+
+.popup-title {
+  font-size: 28px;
+  font-weight: bolder;
+  margin-bottom: 20px;
+  color: black;
+  margin-top: 0;
+}
+
+.popup-label {
+  margin-bottom: 0;
+}
+
+.popup-input {
+  outline: none;
+  border-radius: 5px;
+  border: 1px solid rgb(0, 0, 0);
+  background-color: transparent;
+  margin: 0 0 20px 0;
+  text-align: left;
+  font-size: 14px;
+  color: black;
+  height: 20px;
+}
+
+.popup-forgot{
+  font-size: 14px;
+  color: rgb(67, 65, 65);
+  text-decoration: none;
+  margin-bottom: 10px;
+
+}
+
+.popup-forgot:hover{
+color: rgb(0, 0, 0);
+cursor: pointer;
+}
+
+.popup__close-button{
+   background-image: url("/images/closeicon.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: -20px;
+  right:  -20px;
+  opacity: 0.6;
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+}
+
+
+.popup__close-button:hover {
+  opacity: 1;
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+.popup__overlay{
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-text{
+  font-size: 12px;
+  font-weight: 400;
+  color: rgb(67, 65, 65);
+  margin-bottom: 20px;
+}
+
+.popup-login-button{
+  display: flex;
+  background-color: rgb(0, 0, 0);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: auto;
+}
+
+.popup-remember-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  /* gap: 5px; */
+  font-size: larger;
+}
+
+.popup-remember-text{
+  font-size: small;
+  margin:0;
+}
+
+.popup-password-show {
+  background-image: url("/public/images/show-password.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 15px;
+  width: 15px;
+  position: relative;
+  top: -40px;
+  left: 221px;
+  cursor: pointer;
+}
+
+.popup-password-hide{
+background-image: url("/public/images/hide-password.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 15px;
+  width: 15px;
+  position: relative;
+  top: -37px;
+  left: 221px;
+  cursor: pointer;
+}
+
+.popup-password-icon:hover {
+  transform: scale(1.1);
+}

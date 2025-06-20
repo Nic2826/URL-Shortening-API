@@ -25,15 +25,16 @@
   width: 200px;
   height: 50px;
   border: none;
-  font-size: medium;
+  font-size: large;
   font-weight: 800;
-  color: rgba(255, 255, 255, 0.777);
+  color: white;
   border-radius: 50px;
-  cursor: pointer;
   background-color: hsl(180, 66%, 49%);
 }
 .main__button:hover {
-  background-color: hsla(180, 85%, 46%, 0.492);
+  background-color: hsl(180, 66%, 40%);
+  transform: scale(1.05);
+  cursor: pointer;
 }
 
 .main__img {

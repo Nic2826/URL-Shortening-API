@@ -10,6 +10,10 @@ export default function Shortener() {
   const [errorMessage, setErrorMessage] = useState("");
   const [iswrong, setIsWrong] = useState(false);
 
+useEffect(() => {
+
+  
+}, [errorMessage]);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
@@ -58,6 +62,8 @@ export default function Shortener() {
     } finally {
       setLoading(false); // Siempre apagar el loading
     }
+
+    console.log("Error:", errorMessage);
   };
 
   useEffect(() => {
@@ -91,13 +97,14 @@ export default function Shortener() {
           id="url"
           required
           value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={(e) => {setInputValue(e.target.value); setIsWrong(false); setErrorMessage("")}}
         />
         <div className="shortener__close-button" onClick={() => {setInputValue(""); setIsWrong(false); setErrorMessage("")}}> </div>
 
         <button className="shortener__button" type="submit">
           {loading ? "loading..." : "Shorten It!"}
         </button>
+
         <span className="shortener__error">{errorMessage}</span>
       </form>
 

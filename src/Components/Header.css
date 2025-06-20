@@ -1,80 +1,92 @@
-.header{
-    display: flex;
-    flex-direction: row;
-    color: rgba(32, 4, 4, 0.538);
-    text-align: center;
-justify-content: center;
-    /* width: 85%; */
-    margin: 0 120px;
-    padding-top: 15px;
-    font-size: 20px;
-    font-weight: 800;
-
+.header {
+  display: flex;
+  flex-direction: row;
+  color: rgba(32, 4, 4, 0.538);
+  text-align: center;
+  /* justify-content: center; */
+  justify-content: space-between;
+  align-content: center;
+  margin: 0 120px;
+  padding-top: 15px;
+  font-size: 20px;
+  font-weight: 800;
 }
 
-.header__logo{
-    height: 40px;
-    width: 120px;
+.header__logo {
+  height: 30px;
+  width: 120px;
+  align-self: center;
+  align-content: center;
 }
 
-.header__nav-container{
-    display: flex;
-    flex-direction: row;
-    align-items:center;
-    justify-content: space-between;
-    width: 100%;
+.header__nav-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* gap: 200px; */
+  justify-content: space-between;
+  width: 100%;
 }
 
-.header__nav{
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    margin: 0 0 0 60px;
+.header__nav {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin: 0 0 0 60px;
   padding: 0;
 }
 
-.header__nav-item{
+.header__nav-item {
   margin: 0;
   padding: 0;
 }
 
-.header__nav-access{
-    display: flex;
-    flex-direction: row;
-    justify-content:flex-end;
-    gap: 10px;
-    align-items: center;
-    margin: 0 ;
+.header__access {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 10px;
+  align-items: center;
+  margin: 0;
   padding: 0;
 }
 
-.header__nav-login{
-    margin: 0;
-    padding: 0;
-    border: none;
-    background-color: transparent;
-    color: rgba(32, 4, 4, 0.538);
-    font-size: 20px;
-    font-weight: 800;
-    cursor: pointer;
+.header__access-login {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  color: rgba(32, 4, 4, 0.538);
+  font-size: 20px;
+  font-weight: 800;
+  cursor: pointer;
 }
 
-.header__nav-signup{
-    margin: 0;
-    padding: 10px;
-    border-radius: 50px;
-    border: none;
-    background-color: hsl(180, 66%, 49%);
-    color: rgba(249, 245, 245);
-    font-size: 20px;
-    font-weight: 800;
-    cursor: pointer;
-}   
+.header__access-login:hover {
+  transform: scale(1.1);
+  color: black;
+}
 
+.header__access-signup {
+  margin: 0;
+  padding: 10px;
+  border-radius: 50px;
+  border: none;
+  background-color: hsl(180, 66%, 49%);
+  color: white;
+  font-size: 20px;
+  font-weight: 800;
+}
 
+.header__access-signup:hover {
+  background-color: hsl(180, 66%, 40%);
+  transform: scale(1.05);
+  cursor: pointer;
+  color: white;
+}
 
-
-.header__nav-item:hover{
-    color: rgba(2, 2, 2, 0.816);
-    cursor: pointer;
+.header__nav-item:hover {
+  color: rgba(2, 2, 2, 0.816);
+  cursor: pointer;
+  transform: scale(1.1);
 }
