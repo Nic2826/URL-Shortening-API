@@ -1,12 +1,39 @@
+require('dotenv').config();
+console.log("🔑 JWT_SECRET cargado:", !!process.env.JWT_SECRET); // Solo muestra si existe
+console.log("🔑 Longitud del JWT_SECRET:", process.env.JWT_SECRET?.length);
 const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch');
+const mongoose = require('mongoose');
 const app = express();
 const PORT = 3001;
+
+// ✅ CONEXIÓN A MONGODB
+mongoose.connect('mongodb://localhost:27017/URL-Shortener', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => {
+  console.log('✅ Conectado a MongoDB');
+})
+.catch((error) => {
+  console.error('❌ Error conectando a MongoDB:', error);
+});
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Servidor funcionando correctamente',
+    endpoints: [
+      'POST /api/auth/login',
+      'POST /api/auth/signup',
+      'POST /api/shorten'
+    ]
+  });
+});
 
 // Endpoint para acortar URLs
 app.post('/api/shorten', async (req, res) => {
@@ -55,6 +82,8 @@ if (!urlPattern.test(url.trim())) {
     res.status(500).json({ success: false, error: 'Error' });
   }
 });
+
+app.use("/api/auth", require("./routes/auth"));
 
 app.listen(PORT, () => {
   console.log(`Servidor ejecutándose en http://localhost:${PORT}`);

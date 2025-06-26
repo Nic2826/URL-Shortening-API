@@ -21,14 +21,32 @@
   font-weight: 600;
 }
 
+.result-container:hover {
+  box-shadow: 0px 0px 10px rgb(61, 27, 92);
+  transform: translateX(-50%) scale(1.01);
+  cursor: pointer;
+}
+
+
 .result-original-url {
   flex: 1;
   text-align: left;
+  text-decoration: none;
+  color: rgb(52, 5, 85);
+}
+
+.result-original-url:hover {
+  color: rgb(87, 30, 128);
 }
 
 .result-short-url{
   text-align: left;
   color: hsl(180, 66%, 49%);
+  text-decoration: none;
+}
+
+.result-short-url:hover {
+  color: hsl(180, 67%, 35%);
 }
 
 .result__copy-button{
@@ -74,7 +92,22 @@
 
 .result-empty{
   text-align: center;
-  font-size: larger;
+  font-size: 30px;
   font-weight: 600;
   color: gray;
+}
+
+.result-highlight {
+  animation: fadeOutShadow 2s ease-out forwards;
+}
+
+@keyframes fadeOutShadow {
+    0% {
+    transform: translateX(-50%) scale(1.02);
+    box-shadow: rgb(61, 27, 92) 0px 0px 20px;
+  }
+  100% {
+    transform: translateX(-50%) scale(1);
+    box-shadow: rgb(61, 27, 92) 0px 0px 0px;
+  }
 }

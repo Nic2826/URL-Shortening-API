@@ -9,11 +9,8 @@ export default function Shortener() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [iswrong, setIsWrong] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
 
-useEffect(() => {
-
-  
-}, [errorMessage]);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
@@ -52,6 +49,13 @@ useEffect(() => {
           { originalUrl: cleanUrl, shortUrl: data.result_url },
         ];
         setListUrl(newList);
+        // 🟡 Resalta el nuevo (último) índice
+setHighlightedIndex(0);
+
+setTimeout(() => {
+  setHighlightedIndex(null);
+}, 2000); // lo borra después de 2 segundos
+
         localStorage.setItem("listUrl", JSON.stringify(newList));
         setErrorMessage(""); // Limpiar errorMessagees
       } else {
@@ -112,7 +116,8 @@ useEffect(() => {
   const updatedList = listUrl.filter((_, i) => i !== index);
   setListUrl(updatedList);
   localStorage.setItem("listUrl", JSON.stringify(updatedList));
-}} />
+}} 
+highlightedIndex={highlightedIndex}/>
     </div>
   );
 }

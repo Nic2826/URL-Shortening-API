@@ -3,6 +3,8 @@ type SignupProps = {
   onClose: () => void;
 };
 export default function Signup({onClose}:SignupProps) {
+
+  
   return (
    <Popup 
           popupInput="Email"

@@ -5,13 +5,11 @@
 @import url('/src/Components/Card.css');
 @import url('/src/Components/Results.css');
 @import url('/src/Components/Popup.css');
-@import url('/src/Components/Login.css');
-@import url('/src/Components/Signup.css');
+@import url('/src/Components/Loading.css');
 @import url('/src/Components/Footer.css');
 
 .body{
   background-color: #ddd4d4;
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 20px;
 }

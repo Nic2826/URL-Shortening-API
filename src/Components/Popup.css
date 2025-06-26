@@ -109,7 +109,7 @@ cursor: pointer;
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
-  /* gap: 5px; */
+  margin-top: 0;
   font-size: larger;
 }
 
@@ -137,11 +137,40 @@ background-image: url("/public/images/hide-password.png");
   height: 15px;
   width: 15px;
   position: relative;
-  top: -37px;
+  top: -40px;
   left: 221px;
   cursor: pointer;
 }
 
 .popup-password-icon:hover {
   transform: scale(1.1);
+}
+
+.popup-error-email{
+  position: absolute;
+  top: 90px;
+  left: 0;
+  color: red;
+  font-size: 10px;
+  font-weight: lighter;
+  margin-top: 3px;
+  text-align: center;
+  width: 100%;
+}
+
+.popup-error-password{
+  position: absolute;
+  top: 135px;
+  left: 0;
+  color: red;
+  font-size: 10px;
+  font-weight: lighter;
+  margin-top: 3px;
+  text-align: center;
+  width: 100%;
+}
+
+.popup-input-error {
+  border-color: red;
+  /* border-width: 1px; */
 }
