@@ -104,7 +104,7 @@
 @keyframes fadeOutShadow {
     0% {
     transform: translateX(-50%) scale(1.02);
-    box-shadow: rgb(61, 27, 92) 0px 0px 20px;
+    box-shadow: red 0px 0px 20px;
   }
   100% {
     transform: translateX(-50%) scale(1);

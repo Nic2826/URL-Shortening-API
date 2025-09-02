@@ -19,6 +19,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+    linksCount: {
+    type: Number,
+    default: 0, // Contador de enlaces acortados
+  },
+},
+ { timestamps: true 
 });
 
 module.exports = mongoose.model("User", userSchema);

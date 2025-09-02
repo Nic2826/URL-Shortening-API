@@ -1,4 +1,4 @@
-import Popup from "./Popup"
+import PopupWithForm from "./PopupWithForm"
 type SignupProps = {
   onClose: () => void;
 };
@@ -6,10 +6,10 @@ export default function Signup({onClose}:SignupProps) {
 
   
   return (
-   <Popup 
-          popupInput="Email"
-          popupInputPassword="Password"
-          popupTitle="Sign Up"
+   <PopupWithForm 
+          PopupWithFormInput="Email"
+          PopupWithFormInputPassword="Password"
+          PopupWithFormTitle="Sign Up"
           buttonText="Sign Up"
           onClose={onClose} 
           />

@@ -4,8 +4,10 @@ import Shortener from "./Components/Shortener";
 import Statistics from './Components/Statistics';
 import Loading from './Components/Loading';
 import { useState, useEffect } from "react";
+import { AuthProvider } from './Contexts/AuthContext';
 export default function App() {
   const [isLoadingApp, setIsLoadingApp] = useState(true);
+  
 
 useEffect(() => {
   const loadInitialData = async () => {
@@ -22,8 +24,9 @@ useEffect(() => {
   loadInitialData();
 }, []);
 
-console.log("🎨 Renderizando App, isLoadingApp:", isLoadingApp);
+console.log("🎨Renderizando App, isLoadingApp:", isLoadingApp);
  return (
+  <AuthProvider>
   <div>
     {isLoadingApp ? (
       <Loading />
@@ -37,5 +40,6 @@ console.log("🎨 Renderizando App, isLoadingApp:", isLoadingApp);
       </>
     )}
   </div>
+  </AuthProvider>
 );
 }

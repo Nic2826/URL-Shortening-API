@@ -5,10 +5,19 @@
   margin-bottom: 130px;
 }
 
+.main__username{
+  font-size: 40px;
+  font-weight: 600;
+  color: hsl(180, 65%, 23%);
+  margin-top: 140px;
+  margin-bottom: 0;
+}
+
 .main__title {
   font-size: 90px;
   font-weight: 900;
-  margin: 140px 0 0 0;
+  margin: 0;
+  padding: 0;
   line-height: 1;
 }
 
@@ -20,27 +29,13 @@
   color: gray;
 }
 
-.main__button {
-  margin-top: 25px;
-  width: 200px;
-  height: 50px;
-  border: none;
-  font-size: large;
-  font-weight: 800;
-  color: white;
-  border-radius: 50px;
-  background-color: hsl(180, 66%, 49%);
-}
-.main__button:hover {
-  background-color: hsl(180, 66%, 40%);
-  transform: scale(1.05);
-  cursor: pointer;
-}
 
 .main__img {
   grid-column: 2;
   grid-row: 1/4;
   position: absolute;
-  right: -150px;
-  top: 150px;
+  right: 0;
+  top: 100px;
+  z-index: -1;
+  max-width: 50vw;
 }

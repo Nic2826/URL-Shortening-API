@@ -1,4 +1,4 @@
-import Popup from "./Popup"
+import PopupWithForm from "./PopupWithForm"
 
 type LoginProps = {
   onClose: () => void;
@@ -6,10 +6,10 @@ type LoginProps = {
 export default function Login({onClose}: LoginProps) {
     
   return (
-        <Popup 
-        popupInput="Username"
-        popupInputPassword="Password"
-        popupTitle="Log in"
+        <PopupWithForm 
+        PopupWithFormInput="Username"
+        PopupWithFormInputPassword="Password"
+        PopupWithFormTitle="Log in"
         buttonText="Log in"
         onClose={onClose} />
   )

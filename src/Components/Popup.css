@@ -1,68 +1,62 @@
-.popup{
- display: flex;
+.Popup{
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 300px;
-  height: 300px;
+  width: 450px;
+  height: 100px;
   background-color: rgb(241, 235, 235);
   position: fixed;
   top: 30%;
-  left: 40%;
-  z-index: 2;
+ left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
   border-radius: 5px;
   font-size: 16px;
+ box-shadow: 1px 2px 8px rgb(163, 28, 28);
 }
 
-.popup-hidden{
-  display: none;
-
+.Popup__overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
 }
 
-.popup-form {
-  z-index: 3;
- 
-}
-
-.popup-title {
-  font-size: 28px;
+.Popup-message {
+  font-size: 18px;
   font-weight: bolder;
+  color: black;
+  margin: auto;
+  padding: 0;
+  text-align: center;
+}
+
+.Popup-message-gray {
+  font-size: 18px;
+  font-weight: bolder;
+  color: rgb(75, 65, 65);
+  text-align: center;
   margin-bottom: 20px;
-  color: black;
-  margin-top: 0;
 }
 
-.popup-label {
-  margin-bottom: 0;
+.Popup-message .Popup-message-link{
+  color: rgb(37, 17, 55);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 18px;
 }
 
-.popup-input {
-  outline: none;
-  border-radius: 5px;
-  border: 1px solid rgb(0, 0, 0);
-  background-color: transparent;
-  margin: 0 0 20px 0;
-  text-align: left;
-  font-size: 14px;
-  color: black;
-  height: 20px;
+.Popup-message-link:hover{
+  color: rgb(135, 88, 180);
+  transform: scale(1.1);
 }
 
-.popup-forgot{
-  font-size: 14px;
-  color: rgb(67, 65, 65);
-  text-decoration: none;
-  margin-bottom: 10px;
-
-}
-
-.popup-forgot:hover{
-color: rgb(0, 0, 0);
-cursor: pointer;
-}
-
-.popup__close-button{
-   background-image: url("/images/closeicon.png");
+.Popup__close-button{
+  background-image: url("/images/closeicon.png");
   background-size: cover;
   background-repeat: no-repeat;
   position: absolute;
@@ -72,105 +66,12 @@ cursor: pointer;
   font-size: 20px;
   height: 20px;
   width: 20px;
+  cursor: pointer;
+  z-index: 5;
 }
 
-
-.popup__close-button:hover {
+.Popup__close-button:hover {
   opacity: 1;
   cursor: pointer;
   transform: scale(1.05);
-}
-
-.popup__overlay{
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.popup-text{
-  font-size: 12px;
-  font-weight: 400;
-  color: rgb(67, 65, 65);
-  margin-bottom: 20px;
-}
-
-.popup-login-button{
-  display: flex;
-  background-color: rgb(0, 0, 0);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  margin: auto;
-}
-
-.popup-remember-container{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-  margin-top: 0;
-  font-size: larger;
-}
-
-.popup-remember-text{
-  font-size: small;
-  margin:0;
-}
-
-.popup-password-show {
-  background-image: url("/public/images/show-password.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  height: 15px;
-  width: 15px;
-  position: relative;
-  top: -40px;
-  left: 221px;
-  cursor: pointer;
-}
-
-.popup-password-hide{
-background-image: url("/public/images/hide-password.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  height: 15px;
-  width: 15px;
-  position: relative;
-  top: -40px;
-  left: 221px;
-  cursor: pointer;
-}
-
-.popup-password-icon:hover {
-  transform: scale(1.1);
-}
-
-.popup-error-email{
-  position: absolute;
-  top: 90px;
-  left: 0;
-  color: red;
-  font-size: 10px;
-  font-weight: lighter;
-  margin-top: 3px;
-  text-align: center;
-  width: 100%;
-}
-
-.popup-error-password{
-  position: absolute;
-  top: 135px;
-  left: 0;
-  color: red;
-  font-size: 10px;
-  font-weight: lighter;
-  margin-top: 3px;
-  text-align: center;
-  width: 100%;
-}
-
-.popup-input-error {
-  border-color: red;
-  /* border-width: 1px; */
 }

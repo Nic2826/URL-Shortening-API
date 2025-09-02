@@ -31,12 +31,18 @@ router.post("/signup", async (req, res) => {
     const newUser = new User({ email, username, password: hashedPassword });
     await newUser.save();
 
-    res.status(201).json({ message: "user registered successfully", username });
+   res.status(201).json({ 
+            message: "User registered successfully",
+            email: newUser.email,
+            username: newUser.username,
+            id: newUser._id,
+            createdAt: newUser.createdAt,
+            linksCount: 0 // Usuario nuevo, 0 enlaces
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Internal server error" });
     }
-    catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal server error" });
-  }
 });
 
 // Login
@@ -72,12 +78,20 @@ router.post('/login', async (req, res) => {
       expiresIn: '2h'
     });
 
-    res.json({ message: 'Login exitoso', token });
+     res.json({ 
+            message: 'Login exitoso',
+            token,
+            email: user.email,
+            username: user.username,
+            id: user._id,
+            createdAt: user.createdAt,
+            linksCount: user.linksCount || 0 // Si tienes este campo
+        });
 
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Error en el servidor' });
-  }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error en el servidor' });
+    }
 });
 
 module.exports = router;

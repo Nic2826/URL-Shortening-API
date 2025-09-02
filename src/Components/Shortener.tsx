@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
 import Results from "./Results";
+import Popup from "./Popup";
+import Login from "./Login"; // Importar Login
+import { useAuth } from "../Contexts/AuthContext";
 
 export default function Shortener() {
+  const { isLoggedIn } = useAuth();
   const [inputValue, setInputValue] = useState("");
   const [listUrl, setListUrl] = useState<
     { originalUrl: string; shortUrl: string }[]
@@ -10,19 +14,36 @@ export default function Shortener() {
   const [errorMessage, setErrorMessage] = useState("");
   const [iswrong, setIsWrong] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [isLoginVisible, setIsLoginVisible] = useState(false); // Nuevo estado
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  // Resetear popup cuando usuario se desloggea
+  useEffect(() => {
+    if (!isLoggedIn && listUrl.length >= 3) {
+      setIsPopupVisible(false);
+      setIsLoginVisible(false); // También resetear login
+    }
+  }, [isLoggedIn]);
+
+  // Cerrar login
+  const handleCloseLogin = () => {
+    setIsLoginVisible(false);
+  };
+ 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => { 
     event.preventDefault();
     setLoading(true);
-    // Aquí puedes manejar el envío del formulario, como llamar a una API para acortar la URL
+    setErrorMessage("");
+    
     const cleanUrl = inputValue.trim();
 
-    if (!cleanUrl) {
+    if (!cleanUrl && isLoggedIn) {
       setErrorMessage("Please fill out the field");
       setLoading(false);
       return;
     }
-    // Verifica si ya se acortó esta URL
+
+    // Verificar si ya se acortó esta URL
     const alreadyShortened = listUrl.some(
       (item) => item.originalUrl === cleanUrl
     );
@@ -33,6 +54,14 @@ export default function Shortener() {
       return;
     }
 
+    // LÓGICA CORREGIDA: Verificar autenticación PRIMERO
+    if (!isLoggedIn && listUrl.length >= 3) {
+      setIsPopupVisible(true);
+      setLoading(false);
+      return;
+    }
+
+    // Si llegamos aquí, el usuario SÍ está loggeado
     try {
       const response = await fetch("http://localhost:3001/api/shorten", {
         method: "POST",
@@ -45,29 +74,29 @@ export default function Shortener() {
       const data = await response.json();
       if (data.success && data.result_url) {
         const newList = [
-          ...listUrl,
           { originalUrl: cleanUrl, shortUrl: data.result_url },
+          ...listUrl
         ];
         setListUrl(newList);
-        // 🟡 Resalta el nuevo (último) índice
-setHighlightedIndex(0);
+        setHighlightedIndex(0);
 
-setTimeout(() => {
-  setHighlightedIndex(null);
-}, 2000); // lo borra después de 2 segundos
+        setTimeout(() => {
+          setHighlightedIndex(null);
+        }, 2000);
 
         localStorage.setItem("listUrl", JSON.stringify(newList));
-        setErrorMessage(""); // Limpiar errorMessagees
+        setInputValue("");
       } else {
-        setErrorMessage(data.errorMessage || "Invalid URL, please try again.");
+        console.error("Error:", data.errorMessage);
+        setErrorMessage(
+          data.errorMessage || "Server Error, please try again later."
+        );
       }
     } catch (errorMessage) {
-      setErrorMessage("error connecting to the service");
+      setErrorMessage("Error connecting to the service");
     } finally {
-      setLoading(false); // Siempre apagar el loading
+      setLoading(false);
     }
-
-    console.log("Error:", errorMessage);
   };
 
   useEffect(() => {
@@ -86,9 +115,18 @@ setTimeout(() => {
   return (
     <div>
       <form className="shortener" onSubmit={handleSubmit} noValidate>
-        <div>
-          
-        </div>
+        {/* Popup principal */}
+        {isPopupVisible && !isLoggedIn && (
+          <Popup
+            onClose={() => setIsPopupVisible(false)}
+          />
+        )}
+
+        {/* Login popup */}
+        {isLoginVisible && (
+          <Login onClose={handleCloseLogin} />
+        )}
+        
         <input
           className={
             iswrong
@@ -101,9 +139,22 @@ setTimeout(() => {
           id="url"
           required
           value={inputValue}
-          onChange={(e) => {setInputValue(e.target.value); setIsWrong(false); setErrorMessage("")}}
+          onChange={(e) => {
+            setInputValue(e.target.value);
+            setIsWrong(false);
+            setErrorMessage("");
+          }}
         />
-        <div className="shortener__close-button" onClick={() => {setInputValue(""); setIsWrong(false); setErrorMessage("")}}> </div>
+        <div
+          className="shortener__close-button"
+          onClick={() => {
+            setInputValue("");
+            setIsWrong(false);
+            setErrorMessage("");
+          }}
+        >
+          {" "}
+        </div>
 
         <button className="shortener__button" type="submit">
           {loading ? "loading..." : "Shorten It!"}
@@ -112,12 +163,15 @@ setTimeout(() => {
         <span className="shortener__error">{errorMessage}</span>
       </form>
 
-      <Results listUrl={listUrl} onDelete={(index) => {
-  const updatedList = listUrl.filter((_, i) => i !== index);
-  setListUrl(updatedList);
-  localStorage.setItem("listUrl", JSON.stringify(updatedList));
-}} 
-highlightedIndex={highlightedIndex}/>
+      <Results
+        listUrl={listUrl}
+        onDelete={(index) => {
+          const updatedList = listUrl.filter((_, i) => i !== index);
+          setListUrl(updatedList);
+          localStorage.setItem("listUrl", JSON.stringify(updatedList));
+        }}
+        highlightedIndex={highlightedIndex}
+      />
     </div>
   );
 }

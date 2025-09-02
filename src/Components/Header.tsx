@@ -1,24 +1,34 @@
 import Login from "./Login";
 import Signup from "./Signup";
 import {useState } from "react";
-
+import { useAuth } from "../Contexts/AuthContext";
 
 export default function Header() {
   const [isLoginClicked, setIsLoginClicked] = useState(false);
   const [isSignupClicked, setIsSignupClicked] = useState(false);
+  const { isLoggedIn, logout, userName } = useAuth();
 
 // setIsLoginClicked(false);
   const handleLoginClick = () => {
-    setIsLoginClicked(true);
+    !isLoggedIn && setIsLoginClicked(true);
     setIsSignupClicked(false);
+    
   };
 
   const handleSignupClick = () => {
-    setIsSignupClicked(true);
+    if(!isLoggedIn){
+      setIsSignupClicked(true);
     setIsLoginClicked(false);
+    }else{
+      // Aquí llamamos a la función logout del contexto para cerrar sesión
+      logout();
+      // También podemos cerrar cualquier popup abierto
+      setIsLoginClicked(false);
+      setIsSignupClicked(false);
+}
   };
 
-  const handleClosePopup = () => {
+  const handleClosePopupWithForm = () => {   
     setIsLoginClicked(false);
     setIsSignupClicked(false);
   };
@@ -34,13 +44,13 @@ export default function Header() {
         </nav>
 
         <div className="header__access">
-          <button className="header__access-login" onClick={handleLoginClick}>Log in</button>
-          <button className="header__access-signup" onClick={handleSignupClick}>Sign Up</button>
+          <button className="header__access-login" onClick={handleLoginClick}>{isLoggedIn ? `${userName}` : "Login"}</button>
+          <button className="header__access-signup" onClick={handleSignupClick}>{isLoggedIn ? "Sign out" : "Sign Up"}</button>
         </div>
         
       </div>
-      {isLoginClicked?<Login onClose={handleClosePopup}/>: ""}
-        {isSignupClicked?<Signup onClose={handleClosePopup}/>:""}
+      {isLoginClicked?<Login onClose={handleClosePopupWithForm}/>: ""}
+        {isSignupClicked?<Signup onClose={handleClosePopupWithForm}/>:""}
     </div>
   );
 }
