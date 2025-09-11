@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import Results from "./Results";
 import Popup from "./Popup";
-import Login from "./Login"; // Importar Login
+import Login from "./Login";
 import { useAuth } from "../Contexts/AuthContext";
 
 export default function Shortener() {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, userInfo, updateUserInfo } = useAuth(); // Agregamos updateUserInfo
   const [inputValue, setInputValue] = useState("");
   const [listUrl, setListUrl] = useState<
     { originalUrl: string; shortUrl: string }[]
@@ -15,17 +15,61 @@ export default function Shortener() {
   const [iswrong, setIsWrong] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [isLoginVisible, setIsLoginVisible] = useState(false); // Nuevo estado
+  const [isLoginVisible, setIsLoginVisible] = useState(false);
 
-  // Resetear popup cuando usuario se desloggea
+  // PASO 1: Función para obtener la clave de localStorage específica del usuario
+  const getUserStorageKey = () => {
+    if (isLoggedIn && userInfo?.username) {
+      return `listUrl_${userInfo.username}`; // Clave única por usuario
+    }
+    return 'listUrl_guest'; // Para usuarios no loggeados
+  };
+
+  // PASO 2: Función para cargar datos del usuario actual
+  const loadUserUrls = () => {
+    const storageKey = getUserStorageKey();
+    const storedList = localStorage.getItem(storageKey);
+    if (storedList) {
+      const parsedList = JSON.parse(storedList);
+      setListUrl(parsedList);
+      
+      // Sincronizar contador con URLs reales
+      if (isLoggedIn && userInfo) {
+        updateUserInfo({ 
+          linksCount: parsedList.length 
+        });
+      }
+    } else {
+      setListUrl([]); // Lista vacía si no hay datos
+      
+      // Si no hay URLs guardadas, el contador debe ser 0
+      if (isLoggedIn && userInfo) {
+        updateUserInfo({ 
+          linksCount: 0 
+        });
+      }
+    }
+  };
+
+  // PASO 3: Función para guardar datos del usuario actual
+  const saveUserUrls = (urlList: { originalUrl: string; shortUrl: string }[]) => {
+    const storageKey = getUserStorageKey();
+    localStorage.setItem(storageKey, JSON.stringify(urlList));
+  };
+
+  // PASO 4: Efecto que se ejecuta cuando cambia el estado de login o userInfo
+  useEffect(() => {
+    loadUserUrls(); // Cargar datos del usuario actual
+  }, [isLoggedIn, userInfo?.username]); // Dependencias: cuando cambia login o usuario
+
+  // PASO 5: Limpiar datos cuando usuario se desloggea
   useEffect(() => {
     if (!isLoggedIn && listUrl.length >= 3) {
       setIsPopupVisible(false);
-      setIsLoginVisible(false); // También resetear login
+      setIsLoginVisible(false);
     }
   }, [isLoggedIn]);
 
-  // Cerrar login
   const handleCloseLogin = () => {
     setIsLoginVisible(false);
   };
@@ -37,7 +81,7 @@ export default function Shortener() {
     
     const cleanUrl = inputValue.trim();
 
-    if (!cleanUrl && isLoggedIn) {
+    if (!cleanUrl) {
       setErrorMessage("Please fill out the field");
       setLoading(false);
       return;
@@ -54,14 +98,13 @@ export default function Shortener() {
       return;
     }
 
-    // LÓGICA CORREGIDA: Verificar autenticación PRIMERO
+    // Verificar autenticación PRIMERO
     if (!isLoggedIn && listUrl.length >= 3) {
       setIsPopupVisible(true);
       setLoading(false);
       return;
     }
 
-    // Si llegamos aquí, el usuario SÍ está loggeado
     try {
       const response = await fetch("http://localhost:3001/api/shorten", {
         method: "POST",
@@ -80,11 +123,19 @@ export default function Shortener() {
         setListUrl(newList);
         setHighlightedIndex(0);
 
+        // ACTUALIZAR CONTADOR - Solo si el URL se acortó exitosamente
+        if (isLoggedIn && userInfo) {
+          updateUserInfo({ 
+            linksCount: (userInfo.linksCount || 0) + 1 
+          });
+        }
+
         setTimeout(() => {
           setHighlightedIndex(null);
         }, 2000);
 
-        localStorage.setItem("listUrl", JSON.stringify(newList));
+        // PASO 6: Usar la nueva función de guardado
+        saveUserUrls(newList);
         setInputValue("");
       } else {
         console.error("Error:", data.errorMessage);
@@ -98,19 +149,6 @@ export default function Shortener() {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    const storedList = localStorage.getItem("listUrl");
-    if (storedList) {
-      setListUrl(JSON.parse(storedList));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (errorMessage !== "") {
-      setIsWrong(true);
-    }
-  }, [errorMessage]);
 
   return (
     <div>
@@ -168,7 +206,16 @@ export default function Shortener() {
         onDelete={(index) => {
           const updatedList = listUrl.filter((_, i) => i !== index);
           setListUrl(updatedList);
-          localStorage.setItem("listUrl", JSON.stringify(updatedList));
+          
+          // ACTUALIZAR CONTADOR al eliminar
+          if (isLoggedIn && userInfo && userInfo.linksCount && userInfo.linksCount > 0) {
+            updateUserInfo({ 
+              linksCount: userInfo.linksCount - 1 
+            });
+          }
+          
+          // PASO 7: Usar la nueva función de guardado para delete también
+          saveUserUrls(updatedList);
         }}
         highlightedIndex={highlightedIndex}
       />

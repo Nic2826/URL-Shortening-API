@@ -98,7 +98,11 @@ setLoading(false);
       if (response.ok) {
         console.log("✅ Éxito:", data);
         onClose?.(); // cerrar el PopupWithForm si todo sale bien
-        login(data.username); // Actualizar el estado de autenticación global
+        login({
+  username: data.username,
+  email: data.email,
+  id: data.id
+});
 
         
       } else {

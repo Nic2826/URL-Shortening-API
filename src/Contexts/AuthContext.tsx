@@ -1,58 +1,88 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import type { ReactNode} from 'react';
+import type { ReactNode } from 'react';
 
-
-// PASO 1: Definir qué información queremos compartir
-type AuthContextType = {
-  // Estados que queremos compartir entre componentes
-  isLoggedIn: boolean;        // ¿Está el usuario loggeado?
-  userName: string | null;   // Email del usuario (null si no está loggeado)
-  
-  // Funciones que queremos usar desde cualquier componente
-  login: (userName: string) => void;     // Para marcar como loggeado
-  logout: () => void;                 // Para cerrar sesión
+// PASO 1: Definir el tipo de información del usuario
+type UserInfo = {
+  email: string;
+  username: string;
+  id?: string | number;
+  createdAt?: string;
+  linksCount?: number;
 };
 
-// PASO 2: Crear el Context (inicialmente undefined)
+// PASO 2: Definir qué información queremos compartir
+type AuthContextType = {
+  // Estados que queremos compartir entre componentes
+  isLoggedIn: boolean;
+  userInfo: UserInfo | null;   // Información completa del usuario
+  
+  // Funciones que queremos usar desde cualquier componente
+  login: (userInfo: UserInfo) => void;     // Para marcar como loggeado con info completa
+  logout: () => void;                      // Para cerrar sesión
+  updateUserInfo: (updates: Partial<UserInfo>) => void; // Para actualizar info
+};
+
+// PASO 3: Crear el Context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// PASO 3: Crear el Provider (el que "provee" la información a los componentes hijos)
+// PASO 4: Crear el Provider
 type AuthProviderProps = {
-  children: ReactNode; // Los componentes que estarán dentro del Provider
+  children: ReactNode;
 };
 
 export function AuthProvider({ children }: AuthProviderProps) {
   // Estados internos del Context
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userName, setUserName] = useState<string | null>(null);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   
   // Cargar datos del localStorage al inicializar
   useEffect(() => {
-    const savedEmail = localStorage.getItem('userName');
+    const savedUserInfo = localStorage.getItem('userInfo');
     const savedIsLoggedIn = localStorage.getItem('isLoggedIn');
     
-    if (savedEmail && savedIsLoggedIn === 'true') {
-      setIsLoggedIn(true);
-      setUserName(savedEmail);
-      console.log(`🔄 Sesión restaurada: ${savedEmail}`);
+    if (savedUserInfo && savedIsLoggedIn === 'true') {
+      try {
+        const parsedUserInfo = JSON.parse(savedUserInfo);
+        setIsLoggedIn(true);
+        setUserInfo(parsedUserInfo);
+        console.log('🔄 Sesión restaurada:', parsedUserInfo);
+      } catch (error) {
+        console.error('❌ Error al parsear la información del usuario:', error);
+        // Limpiar datos corruptos
+        localStorage.removeItem('userInfo');
+        localStorage.removeItem('isLoggedIn');
+      }
     }
   }, []);
   
-  // Funciones que modifican el estado
-  const login = (userName: string) => {
+  // Función para iniciar sesión con información completa
+  const login = (userInfo: UserInfo) => {
     setIsLoggedIn(true);
-    setUserName(userName);
+    setUserInfo(userInfo);
     // Guardar en localStorage
     localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('userName', userName);
-    console.log(`✅ Usuario loggeado: ${userName}`);
+    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+    console.log('✅ Usuario loggeado:', userInfo);
   };
   
+  // Función para actualizar información del usuario
+  const updateUserInfo = (updates: Partial<UserInfo>) => {
+    if (userInfo) {
+      const updatedUserInfo = { ...userInfo, ...updates };
+      setUserInfo(updatedUserInfo);
+      localStorage.setItem('userInfo', JSON.stringify(updatedUserInfo));
+      console.log('🔄 Información de usuario actualizada:', updatedUserInfo);
+    }
+  };
+  
+  // Función para cerrar sesión
   const logout = () => {
     setIsLoggedIn(false);
-    setUserName(null);
+    setUserInfo(null);
     // Limpiar localStorage
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userInfo');
+    // También limpiar el userName viejo si existe
     localStorage.removeItem('userName');
     console.log('👋 Usuario desloggeado');
   };
@@ -60,9 +90,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Objeto que se compartirá con todos los componentes hijos
   const value = {
     isLoggedIn,
-    userName,
+    userInfo,
     login,
-    logout
+    logout,
+    updateUserInfo
   };
   
   return (
@@ -72,7 +103,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   );
 }
 
-// PASO 4: Hook personalizado para usar el Context fácilmente
+// PASO 5: Hook personalizado para usar el Context fácilmente
 export function useAuth() {
   const context = useContext(AuthContext);
   
@@ -83,3 +114,6 @@ export function useAuth() {
   
   return context;
 }
+
+// Exportar el tipo UserInfo para usar en otros componentes
+export type { UserInfo };

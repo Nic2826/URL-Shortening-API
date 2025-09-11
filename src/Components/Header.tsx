@@ -6,7 +6,7 @@ import { useAuth } from "../Contexts/AuthContext";
 export default function Header() {
   const [isLoginClicked, setIsLoginClicked] = useState(false);
   const [isSignupClicked, setIsSignupClicked] = useState(false);
-  const { isLoggedIn, logout, userName } = useAuth();
+  const { isLoggedIn, logout, userInfo } = useAuth();
 
 // setIsLoginClicked(false);
   const handleLoginClick = () => {
@@ -44,7 +44,7 @@ export default function Header() {
         </nav>
 
         <div className="header__access">
-          <button className="header__access-login" onClick={handleLoginClick}>{isLoggedIn ? `${userName}` : "Login"}</button>
+          <button className="header__access-login" onClick={handleLoginClick}>{isLoggedIn && userInfo ? `${userInfo.username}` : "Log in"}</button>
           <button className="header__access-signup" onClick={handleSignupClick}>{isLoggedIn ? "Sign out" : "Sign Up"}</button>
         </div>
         

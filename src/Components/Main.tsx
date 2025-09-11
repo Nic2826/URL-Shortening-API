@@ -1,13 +1,13 @@
 import { useAuth } from '../Contexts/AuthContext';
 
 export default function Main() {
-  const { isLoggedIn, userName } = useAuth();
+  const { isLoggedIn, userInfo } = useAuth();
 
   return (
 
     <div className="main">
 
-      <p className='main__username'>{isLoggedIn ? `Welcome, ${userName}`:"" }</p>
+      <p className='main__username'>{isLoggedIn && userInfo ? `Welcome, ${userInfo.username}` : ""}</p>
       
     
       <h1 className="main__title">More than just 
